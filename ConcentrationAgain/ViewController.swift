@@ -19,20 +19,20 @@ class ViewController: UIViewController {
         return ((cardButtons.count + 1) / 2)
     }
     
-    lazy var game = Concentration(numberOfPairOfCards: numberOfPairOfCards)
+    private lazy var game = Concentration(numberOfPairOfCards: numberOfPairOfCards)
 
-    var flipCount = 0 {
+    private(set) var flipCount = 0 {
         didSet {
             flipCountLabel.text = "Flips count: \(flipCount)"
         }
     }
     
     
-    @IBOutlet weak var flipCountLabel: UILabel!
+    @IBOutlet private weak var flipCountLabel: UILabel!
     
-    @IBOutlet var cardButtons: [UIButton]!
+    @IBOutlet private var cardButtons: [UIButton]!
     
-    @IBAction func touchCard(_ sender: UIButton) {
+    @IBAction private func touchCard(_ sender: UIButton) {
         flipCount += 1
         
         if let cardNumber = cardButtons.index(of: sender) {
@@ -43,7 +43,7 @@ class ViewController: UIViewController {
         }
     }
     
-    func updateViewFromModel() {
+    private func updateViewFromModel() {
         for index in cardButtons.indices {
             let button = cardButtons[index]
             let card = game.cards[index]
@@ -57,11 +57,12 @@ class ViewController: UIViewController {
         }
     }
     
-    var emoji = Dictionary<Int, String>()
+    private var emoji = Dictionary<Int, String>()
     
-    func emoji(for card: Card) -> String {
+    private func emoji(for card: Card) -> String {
         if emoji[card.identifier] == nil, emojiChoices.count > 0 {
-            let randomIndex = Int(arc4random_uniform(UInt32(emojiChoices.count)))
+            let randomIndex = emojiChoices.count.arc4random
+            
             emoji[card.identifier] = emojiChoices.remove(at: randomIndex)
         }
         
@@ -72,12 +73,12 @@ class ViewController: UIViewController {
         }
     }
     
-    var emojiChoices = ["🦇", "🍭", "🙀", "👹", "👻", "🎃", "🔮", "🍎", "🕸"]
-    
-    
-    
-    
+    private var emojiChoices = ["🦇", "🍭", "🙀", "👹", "👻", "🎃", "🔮", "🍎", "🕸"]
+}
 
-    
+extension Int {
+    var arc4random: Int {
+        return Int(arc4random_uniform(UInt32(self)))
+    }
 }
 
