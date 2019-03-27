@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
     }
     
     var numberOfPairOfCards: Int {
@@ -26,6 +27,11 @@ class ViewController: UIViewController {
             flipCountLabel.text = "Flips count: \(flipCount)"
         }
     }
+    
+    private func updateFlipCountLabel() {
+        
+    }
+    
     
     
     @IBOutlet private weak var flipCountLabel: UILabel!
@@ -41,6 +47,7 @@ class ViewController: UIViewController {
         } else {
             print("Chosen card was not in cardButtons.")
         }
+    
     }
     
     private func updateViewFromModel() {
@@ -57,23 +64,24 @@ class ViewController: UIViewController {
         }
     }
     
-    private var emoji = Dictionary<Int, String>()
+    
+    
+    private var emoji = Dictionary<Card, String>()
     
     private func emoji(for card: Card) -> String {
-        if emoji[card.identifier] == nil, emojiChoices.count > 0 {
-            let randomIndex = emojiChoices.count.arc4random
-            
-            emoji[card.identifier] = emojiChoices.remove(at: randomIndex)
+        if emoji[card] == nil, emojiChoices.count > 0 {
+            let randomIndex = emojiChoices.index(emojiChoices.startIndex, offsetBy: emojiChoices.count.arc4random)
+            emoji[card] = String(emojiChoices.remove(at: randomIndex))
         }
         
-        if emoji[card.identifier] != nil {
-            return emoji[card.identifier]!
+        if emoji[card] != nil {
+            return emoji[card]!
         } else {
             return "?"
         }
     }
     
-    private var emojiChoices = ["🦇", "🍭", "🙀", "👹", "👻", "🎃", "🔮", "🍎", "🕸"]
+    private var emojiChoices = "🦇🍭🙀👹👻🎃🔮🍎🕸"
 }
 
 extension Int {
